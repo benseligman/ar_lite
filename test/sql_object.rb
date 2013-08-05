@@ -1,9 +1,10 @@
-require 'active_record_lite'
+require_relative '../lib/active_record_lite'
 
 # https://tomafro.net/2010/01/tip-relative-paths-with-file-expand-path
 cats_db_file_name =
   File.expand_path(File.join(File.dirname(__FILE__), "cats.db"))
 DBConnection.open(cats_db_file_name)
+
 
 class Cat < SQLObject
   set_table_name("cats")
@@ -23,5 +24,6 @@ p Human.all
 p Cat.all
 
 c = Cat.new(:name => "Gizmo", :owner_id => 1)
+
 c.save # create
 c.save # update
