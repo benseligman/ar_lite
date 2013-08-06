@@ -18,6 +18,15 @@ class MassObject
     end
   end
 
+  def self.my_attr_accessor(*attributes)
+    attributes.each do |attribute|
+      define_method(attribute) { instance_variable_get("@#{ attribute }") }
+      define_method("#{attribute}=") do |value|
+        instance_variable_set("@#{ attribute }", value)
+      end
+    end
+  end
+
   def initialize(params = {})
     params.each do |attr_name, value|
       unless self.class.attributes.include?(attr_name)
