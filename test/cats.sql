@@ -20,8 +20,18 @@ CREATE TABLE houses (
   address VARCHAR(255) NOT NULL
 );
 
+CREATE TABLE cars (
+	id INTEGER PRIMARY KEY,
+	name VARCHAR(255) NOT NULL,
+	owner_id INTEGER NOT NULL,
+
+	FOREIGN KEY(owner_id) REFERENCES human(id)
+);
+
 INSERT INTO houses (address) VALUES ("26th and Guerrero");
 INSERT INTO humans (fname, lname, house_id) VALUES ("Devon", "Watts", 1);
 INSERT INTO humans (fname, lname, house_id) VALUES ("Matt", "Rubens", 1);
 INSERT INTO cats (name, owner_id) VALUES ("Breakfast", 1);
 INSERT INTO cats (name, owner_id) VALUES ("Earl", 2);
+INSERT INTO cats (name, owner_id) VALUES ("Jimmie", 1);
+INSERT INTO cars(name, owner_id) VALUES ("Mustang", 1);

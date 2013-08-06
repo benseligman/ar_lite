@@ -1,4 +1,4 @@
-require 'active_record_lite'
+require_relative '../lib/active_record_lite'
 
 # https://tomafro.net/2010/01/tip-relative-paths-with-file-expand-path
 cats_db_file_name =
@@ -24,14 +24,33 @@ end
 class House < SQLObject
   set_table_name("houses")
   set_attrs(:id, :address, :house_id)
+  has_many :livers, :class_name => "Human", :foreign_key => :house_id
+  has_many_through :cats, :livers, :cats
+end
+
+class Car < SQLObject
+  set_table_name("cars")
+  set_attrs(:id, :name, :owner_id)
+  belongs_to :owner, :class_name => "Human"
+  has_many_through :cats, :owner, :cats
 end
 
 cat = Cat.find(1)
 p cat
-p cat.human
+p "Cat Human: #{cat.human}"
+p Cat.assoc_params
 
 human = Human.find(1)
-p human.cats
-p human.house
+p "Human cats: #{human.cats}"
+p "Human house: #{human.house}"
 
-p cat.house
+p "Cat Human house: #{cat.human.house.id}"
+p "Cat house: #{cat.house}"
+
+house = House.find(1)
+p "House people: #{house.livers}"
+p "House cats: #{house.cats}"
+
+car = Car.find(1)
+p "Car person: #{car.owner}"
+p "Car cats: #{car.cats}"

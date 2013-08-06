@@ -4,8 +4,9 @@ require_relative './mass_object'
 require_relative './searchable'
 
 class SQLObject < MassObject
-
+  extend Associatable
   extend Searchable
+
 
   def self.set_table_name(table_name)
     @table_name = table_name
@@ -31,28 +32,12 @@ class SQLObject < MassObject
       FROM #{@table_name}
       WHERE id = ?
     SQL
-    self.parse_all(row)
+    self.parse_all(row.first)
   end
 
   def save
     self.id.nil? ? self.create : self.update
   end
-
-  # protected
- #
- #  def self.objects_from_query_results(query_results)
- #    if query_results.kind_of?(Array)
- #      query_results.map { |row| self.object_from_row(row) }
- #    else
- #      self.object_from_row(query_results)
- #    end
- #  end
- #
- #
- #  def self.object_from_row(row)
- #    sym_keys = row.inject({}) { |hash, (key, val)| hash[key.to_sym] = val; hash }
- #    self.new(sym_keys)
- #  end
 
   private
 
